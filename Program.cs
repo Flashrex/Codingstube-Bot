@@ -26,7 +26,7 @@ namespace Codingstube {
             _services = ConfigureServices(_configuration, _socketConfig, conString);
         }
 
-        private ServiceProvider ConfigureServices(IConfiguration _configuration, DiscordSocketConfig _socketConfig, string _conString) {
+        private static IServiceProvider ConfigureServices(IConfiguration _configuration, DiscordSocketConfig _socketConfig, string _conString) {
             return new ServiceCollection()
                 .AddSingleton(_configuration)
                 .AddSingleton(_socketConfig)
