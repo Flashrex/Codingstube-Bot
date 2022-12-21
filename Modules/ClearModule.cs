@@ -15,7 +15,7 @@ namespace Codingstube.Modules {
         }
 
         [SlashCommand("clear", "Entfernt ein oder mehrere Nachrichten aus diesem Channel.")]
-        public async Task ClearCommand(
+        public async Task ClearCommandAsync(
             [Summary(description: "Die Anzahl an Nachrichten, die gelöscht werden sollen."),
             MinValue(1),
             MaxValue(MAX_CLEAR_MESSAGES)] int anzahlNachrichten) 
