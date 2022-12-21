@@ -5,7 +5,6 @@ using Discord;
 using Discord.Interactions;
 using Codingstube.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Codingstube {
     public class Program {
@@ -64,11 +63,14 @@ namespace Codingstube {
         }
 
         private async Task LogAsync(LogMessage message) {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"[{message.Source}] {message.Message}\n");
+            await Task.Run(() => {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"[{message.Source}] {message.Message}\n");
+            });
+
         }
             
 

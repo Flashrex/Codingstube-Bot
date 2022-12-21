@@ -3,10 +3,6 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
-using System;
-using System.Threading.Tasks;
-using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
-using System.Diagnostics.Tracing;
 
 namespace Codingstube {
     public class InteractionHandler {
@@ -41,11 +37,13 @@ namespace Codingstube {
         }
 
         private async Task LogAsync(LogMessage message) {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"[{message.Source}] {message.Message}\n");
+            await Task.Run(() => {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"[{message.Source}] {message.Message}\n");
+            });
         } 
 
         public async Task WriteInEventChannelAsync(string? text = null, Embed? embed = null) {
