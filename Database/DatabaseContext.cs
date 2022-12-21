@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Codingstube.Database {
     internal class DatabaseContext : DbContext {
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<User>(u => {
+            modelBuilder.Entity<UserEntity>(u => {
                 u.HasKey(u => u.Id);
                 u.Property(u => u.DiscordId).IsRequired();
             });

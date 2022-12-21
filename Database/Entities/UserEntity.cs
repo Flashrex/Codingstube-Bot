@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Codingstube.Database.Models {
-    internal class User {
+    internal class UserEntity {
 
         [NotMapped]
         const uint XP_PER_LEVEL = 250;
@@ -16,11 +16,11 @@ namespace Codingstube.Database.Models {
         public uint XP { get; set; }
 
 
-        public User() {
+        public UserEntity() {
             Username = string.Empty;
         }
 
-        public User(ulong discordId, string username, DateTimeOffset joined) {
+        public UserEntity(ulong discordId, string username, DateTimeOffset joined) {
             DiscordId = discordId;
             Username = username;
             Registered = DateOnly.FromDateTime(joined.Date);
