@@ -45,7 +45,7 @@ namespace Codingstube {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(message.Message + "\n");
+            Console.Write($"[{message.Source}] {message.Message}\n");
         } 
 
         public async Task WriteInEventChannelAsync(string? text = null, Embed? embed = null) {
@@ -68,6 +68,12 @@ namespace Codingstube {
             else
                 await _handler.RegisterCommandsGloballyAsync(true);
 
+
+            //getting current guild
+            var guild = _client.GetGuild(_configuration.GetValue<ulong>("codingstube"));
+
+            //set game status
+            await _client.SetGameAsync($"Verwalte {guild.MemberCount} Member auf dem {guild.Name} Discord.");
         }
 
         private async Task HandleInteraction(SocketInteraction interaction) {

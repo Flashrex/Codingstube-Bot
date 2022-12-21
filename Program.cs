@@ -5,6 +5,7 @@ using Discord;
 using Discord.Interactions;
 using Codingstube.Database;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Codingstube {
     public class Program {
@@ -67,7 +68,7 @@ namespace Codingstube {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(message.Message + "\n");
+            Console.Write($"[{message.Source}] {message.Message}\n");
         }
             
 
