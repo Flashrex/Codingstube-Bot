@@ -1,5 +1,4 @@
 ﻿using Codingstube.Database.Models;
-using Discord;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codingstube.Database {

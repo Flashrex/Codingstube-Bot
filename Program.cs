@@ -5,6 +5,7 @@ using Discord;
 using Discord.Interactions;
 using Codingstube.Database;
 using Microsoft.EntityFrameworkCore;
+using Codingstube.Services;
 
 namespace Codingstube {
     public class Program {
@@ -33,6 +34,8 @@ namespace Codingstube {
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
                 .AddSingleton<InteractionHandler>()
+                .AddSingleton<CommandFileService>()
+                .AddSingleton<CustomCommandService>()
                 .AddDbContext<DatabaseContext>(
             options => options.UseMySql(_conString, ServerVersion.AutoDetect(_conString))
             )
@@ -53,6 +56,7 @@ namespace Codingstube {
             // Here we can initialize the service that will register and execute our commands
             await _services.GetRequiredService<InteractionHandler>()
                 .InitializeAsync();
+
 
             // Bot token can be provided from the Configuration object we set up earlier
             await client.LoginAsync(TokenType.Bot, _configuration["token"]);

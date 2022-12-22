@@ -1,7 +1,9 @@
-﻿using Discord;
+﻿using Codingstube.Services;
+using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace Codingstube {
@@ -23,6 +25,10 @@ namespace Codingstube {
             return _configuration;
         }
 
+        public DiscordSocketClient GetClient() {
+            return _client;
+        }
+
         public async Task InitializeAsync() {
 
             // Process when the client is ready, so we can register our commands.
@@ -36,10 +42,28 @@ namespace Codingstube {
             _client.InteractionCreated += HandleInteraction;
         }
 
-        private async Task LogAsync(LogMessage message) {
+        public async Task LogAsync(LogMessage message) {
+            
             await Task.Run(() => {
                 Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Blue;
+                switch (message.Severity) {
+                    case LogSeverity.Info:
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        break;
+
+                    case LogSeverity.Warning:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+
+                    case LogSeverity.Error:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
+                }
+
                 Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write($"[{message.Source}] {message.Message}\n");
@@ -62,13 +86,17 @@ namespace Codingstube {
             // Context & Slash commands can be automatically registered, but this process needs to happen after the client enters the READY state.
             // Since Global Commands take around 1 hour to register, we should use a test guild to instantly update and test our commands.
             if (Program.IsDebug())
-                await _handler.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("codingstube"), true);
+                await _handler.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("guild"), true);
             else
                 await _handler.RegisterCommandsGloballyAsync(true);
 
 
             //getting current guild
-            var guild = _client.GetGuild(_configuration.GetValue<ulong>("codingstube"));
+            var guild = _client.GetGuild(_configuration.GetValue<ulong>("guild"));
+            
+            //register custom commands
+            await _services.GetRequiredService<CustomCommandService>()
+                .LoadCustomCommandsAsync();
 
             //set game status
             await _client.SetGameAsync($"Verwalte {guild.MemberCount} Member auf dem {guild.Name} Discord.");
