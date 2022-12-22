@@ -24,14 +24,14 @@ namespace Codingstube.Services {
         }
 
         public async Task LoadCustomCommandsAsync() {
-            
+
             //load cmds from file
             Commands = await _fileService.LoadCommandsFromFileAsync("", "commands.json");
 
             //register cmds to guild
-            foreach(CustomCommand command in Commands) {
-               
-                if(!await RegisterCommandToGuildAsync(command)) {
+            foreach (CustomCommand command in Commands) {
+
+                if (!await RegisterCommandToGuildAsync(command)) {
                     LogMessage msg = new(LogSeverity.Error, "CustomCommandService", $"Failed to register command with name {command.Name}.");
                     await _handler.LogAsync(msg);
                 }
@@ -43,7 +43,7 @@ namespace Codingstube.Services {
         }
 
         public async Task<bool> AddCustomCommand(CustomCommand cmd) {
-            if(Commands.Contains(cmd)) return false;
+            if (Commands.FirstOrDefault(c => c.Name == cmd.Name) != null) return false;
 
             //add cmd to list
             Commands.Add(cmd);
@@ -64,8 +64,6 @@ namespace Codingstube.Services {
             //get guild from client
             ulong guildid = config.GetValue<ulong>("guild");
 
-            //Console.WriteLine(client.CurrentUser.Id);
-
             var guild = client.GetGuild(guildid);
             if (guild == null) {
                 LogMessage log = new(LogSeverity.Info, "CustomCommandService", $"Failed to get guild with id {guildid}.");
@@ -84,7 +82,7 @@ namespace Codingstube.Services {
                 await guild.CreateApplicationCommandAsync(commandBuilder.Build());
                 return true;
 
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 LogMessage msg = new(LogSeverity.Error, ex.Source, ex.Message);
                 await _handler.LogAsync(msg);
                 return false;
@@ -137,7 +135,6 @@ namespace Codingstube.Services {
         }
 
         public async Task OnCustomCommandAsync(SocketSlashCommand cmd) {
-            
             //get command from list
             CustomCommand? command = GetCustomCommandByName(cmd.Data.Name);
 
@@ -153,8 +150,13 @@ namespace Codingstube.Services {
                         .WithColor(Color.Blue)
                         .WithCurrentTimestamp();
 
-                //send response
-                await cmd.RespondAsync(embed: embedBuilder.Build());
+                try {
+                    //send response
+                    await cmd.RespondAsync(embed: embedBuilder.Build());
+                } catch (Exception ex) {
+                    LogMessage msg = new(LogSeverity.Error, ex.Source, ex.Message);
+                    await _handler.LogAsync(msg);
+                }
             }
         }
     }
