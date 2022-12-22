@@ -43,7 +43,7 @@ namespace Codingstube.Services {
         }
 
         public async Task<bool> AddCustomCommand(CustomCommand cmd) {
-            if (Commands.Contains(cmd)) return false;
+            if (Commands.FirstOrDefault(c => c.Name == cmd.Name) != null) return false;
 
             //add cmd to list
             Commands.Add(cmd);
