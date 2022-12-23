@@ -11,7 +11,8 @@ namespace Codingstube.Services {
         public async Task<List<CustomCommand>> LoadCommandsFromFileAsync(string filePath, string fileName) {
             
             //construct full path
-            string path = $"{filePath}/{fileName}";
+            string? executePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = $"{executePath}{filePath}/{fileName}";
 
             //create new list
             List<CustomCommand> commands = new();
@@ -41,9 +42,10 @@ namespace Codingstube.Services {
         }
 
         public async Task OverWriteCommandFileAsync(string filePath, string fileName, List<CustomCommand> commands) {
-            
+
             //construct full path
-            string path = $"{filePath}/{fileName}";
+            string? executePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = $"{executePath}{filePath}/{fileName}";
 
             //Convert List to json string
             string json = JsonSerializer.Serialize(commands, new JsonSerializerOptions() { WriteIndented = true });
