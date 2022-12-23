@@ -28,6 +28,7 @@ namespace Codingstube.Services {
                 .WithAuthor(_client.CurrentUser.Username, _client.CurrentUser.GetAvatarUrl() ?? _client.CurrentUser.GetDefaultAvatarUrl())
                 .WithTitle("User joined")
                 .WithDescription($"{user} hat den Server betreten.")
+                .WithColor(Color.Blue)
                 .WithCurrentTimestamp();
 
             await _handler.WriteInEventChannelAsync(embed: embedBuilder.Build());
@@ -73,6 +74,7 @@ namespace Codingstube.Services {
                         .WithTitle("User banned")
                         .WithDescription($"{user} wurde gebannt.")
                         .WithCurrentTimestamp()
+                        .WithColor(Color.Blue)
                         .WithFields(fields);
                 }
 
@@ -84,6 +86,7 @@ namespace Codingstube.Services {
                 .WithAuthor(_client.CurrentUser.Username, _client.CurrentUser.GetAvatarUrl() ?? _client.CurrentUser.GetDefaultAvatarUrl())
                 .WithTitle("User left")
                 .WithDescription($"{user} hat den Server verlassen.")
+                .WithColor(Color.Blue)
                 .WithCurrentTimestamp();
             }
 
