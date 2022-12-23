@@ -18,7 +18,7 @@ namespace Codingstube.Modules {
 
         [SlashCommand("welcome", "Erstellt die Willkommensnachricht und die dazugehörigen Buttons")]
         public async Task WelcomeCommandAsync(
-            [Summary(description: "Die Id des Channels in der die Willkommensnachricht erstellt werden soll.")] IChannel channel) 
+            [Summary(description: "Die Id des Channels in der die Willkommensnachricht erstellt werden soll.")] ISocketMessageChannel channel) 
         {
             //get client for later use
             var client = _handler.GetClient();
@@ -29,6 +29,9 @@ namespace Codingstube.Modules {
             //get guild from client
             ulong guildid = config.GetValue<ulong>("guild");
             var guild = client.GetGuild(guildid);
+
+            //check if welcome message already exists
+            Console.WriteLine("Todo: Implement check if welcome message already exists");
 
             if (guild == null) {
                 await Context.Interaction.RespondAsync("Fehler bei der Ausführung.", ephemeral: true);
@@ -51,11 +54,8 @@ namespace Codingstube.Modules {
                 .WithButton("Rage:MP", "btn_ragemp")
                 .WithButton("FiveM", "btn_fivem");
 
-            //convert channel so we can write in it
-            IMessageChannel mChannel = (IMessageChannel)channel;
-
             //create welcome message
-            await mChannel.SendMessageAsync(embed: embedBuilder.Build(), components: builder.Build());
+            await channel.SendMessageAsync(embed: embedBuilder.Build(), components: builder.Build());
 
             await Context.Interaction.RespondAsync("Willkommensnachricht wurde erfolgreich erstellt.", ephemeral: true);
         }
