@@ -37,9 +37,10 @@ namespace Codingstube {
                 .AddSingleton<CommandFileService>()
                 .AddSingleton<CustomCommandService>()
                 .AddDbContext<DatabaseContext>(
-            options => options.UseMySql(_conString, ServerVersion.AutoDetect(_conString))
-            )
-            .BuildServiceProvider();
+                    options => options.UseMySql(_conString, ServerVersion.AutoDetect(_conString))
+                )
+                .AddSingleton<GuildEventService>()
+                .BuildServiceProvider();
         }
 
         static void Main(string[] args) 
@@ -57,6 +58,8 @@ namespace Codingstube {
             await _services.GetRequiredService<InteractionHandler>()
                 .InitializeAsync();
 
+            //Intialize GuildEventService
+            _services.GetRequiredService<GuildEventService>();
 
             // Bot token can be provided from the Configuration object we set up earlier
             await client.LoginAsync(TokenType.Bot, _configuration["token"]);

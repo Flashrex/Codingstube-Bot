@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Codingstube.Database.Models {
-    internal class UserEntity {
+    public class UserEntity {
 
         [NotMapped]
         const uint XP_PER_LEVEL = 250;

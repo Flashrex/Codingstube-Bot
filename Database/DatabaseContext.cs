@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Codingstube.Database {
-    internal class DatabaseContext : DbContext {
+    public class DatabaseContext : DbContext {
 
         public DbSet<UserEntity> Users { get; set; }
 

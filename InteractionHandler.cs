@@ -4,6 +4,7 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Reflection;
 
 namespace Codingstube {
@@ -82,6 +83,14 @@ namespace Codingstube {
             }
         }
 
+        public async Task UpdateGameStatus() {
+            //getting current guild
+            var guild = _client.GetGuild(_configuration.GetValue<ulong>("guild"));
+
+            //set game status
+            await _client.SetGameAsync($"Verwalte {guild.MemberCount} Member auf dem {guild.Name} Discord.");
+        }
+
         private async Task ReadyAsync() {
             // Context & Slash commands can be automatically registered, but this process needs to happen after the client enters the READY state.
             // Since Global Commands take around 1 hour to register, we should use a test guild to instantly update and test our commands.
@@ -91,15 +100,14 @@ namespace Codingstube {
                 await _handler.RegisterCommandsGloballyAsync(true);
 
 
-            //getting current guild
-            var guild = _client.GetGuild(_configuration.GetValue<ulong>("guild"));
+            
             
             //register custom commands
             await _services.GetRequiredService<CustomCommandService>()
                 .LoadCustomCommandsAsync();
 
-            //set game status
-            await _client.SetGameAsync($"Verwalte {guild.MemberCount} Member auf dem {guild.Name} Discord.");
+            //updating game status
+            await UpdateGameStatus();
         }
 
         private async Task HandleInteraction(SocketInteraction interaction) {
