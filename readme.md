@@ -7,7 +7,7 @@ Dies ist der offizielle Discordbot der `Codingstube`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Built With
+## Built With
 
 * .NET 8.0
 * Discord.NET (3.13.0)
