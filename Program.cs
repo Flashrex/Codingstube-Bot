@@ -23,7 +23,7 @@ namespace Codingstube {
                 .AddJsonFile("settings.json")
                 .Build();
 
-            var conString = $"SERVER={_configuration["server"]};PORT={_configuration["port"]};DATABASE={_configuration["database"]};UID={_configuration["userid"]};PASSWORD={_configuration["password"]};";
+            var conString = $"SERVER={_configuration["server"]};PORT={_configuration["port"]};DATABASE={_configuration["database"]};UID={_configuration["userid"]};PASSWORD={_configuration["password"]}";
             _services = ConfigureServices(_configuration, _socketConfig, conString);
         }
 

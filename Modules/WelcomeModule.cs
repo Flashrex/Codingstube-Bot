@@ -17,6 +17,7 @@ namespace Codingstube.Modules {
         }
 
         [SlashCommand("welcome", "Erstellt die Willkommensnachricht und die dazugehörigen Buttons")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task WelcomeCommandAsync(
             [Summary(description: "Die Id des Channels in der die Willkommensnachricht erstellt werden soll.")] ISocketMessageChannel channel) 
         {

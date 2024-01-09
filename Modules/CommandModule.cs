@@ -16,6 +16,7 @@ namespace Codingstube.Modules {
         }
 
         [SlashCommand("command", "Bearbeite Befehle.")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         public async Task CommandAsync(
             CommandEnum option,
             [Summary(description: "Der Name des Befehls.")] string cmdName = "",
@@ -23,7 +24,10 @@ namespace Codingstube.Modules {
         ) {
 
 
-            switch(option) {
+            //get client for later use
+            var client = _handler.GetClient();
+
+            switch (option) {
                 case CommandEnum.Add:
                     if(cmdName == string.Empty) {
                         await Context.Interaction.RespondAsync("Der Befehl konnte nicht hinzugefügt werden, da kein Parameter für den Namen angegeben wurde.", ephemeral: true);
